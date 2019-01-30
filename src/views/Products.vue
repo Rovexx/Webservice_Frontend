@@ -2,16 +2,26 @@
   <v-container>    
     <!-- all products in the database -->
     <div id="show-products">
-      <h1>Products</h1>
+      <h1 class="blue--text text--darken-2">Producten</h1>
       <div v-for="product in products" v-bind:key="product._id" class="single-product">
-        <h2>{{product.name}}</h2>
-        <h3>{{product.brand}}</h3>
-        <h4>{{product.spoiled}}</h4>
-        <router-link :to="{ name: 'ProductDetails', params: { id: product._id } }">Details</router-link>
-        <v-icon class="mr-2" @click="editProduct(product)">edit</v-icon>
-        <v-icon class="mr-2" @click="deleteProduct(product, product._id)">delete</v-icon>
-        <br>
-        <br>
+        <v-container class="category">
+          <p class="title">Product naam: </p>   <p class="subheading">{{product.name}}</p><br>
+          <p class="title">Merk: </p>           <p class="subheading">{{product.brand}}</p><br>
+          <p class="title">Over de datum: </p>  <p v-if="product.spoiled == 'true'">Ja</p>  <p v-else>Nee</p><br>
+        </v-container>
+                
+        <v-btn class="blue lighten-2">
+          <v-icon class="mr-2">details</v-icon>
+          <router-link :to="{ name: 'ProductDetails', params: { id: product._id } }"><a class="detailsLink">Details</a></router-link>
+        </v-btn>
+        <v-btn class="orange lighten-2" @click="editProduct(product)">
+          <v-icon class="mr-2">edit</v-icon>
+          <a>Aanpassen</a>
+        </v-btn>
+        <v-btn class="red lighten-2" @click="deleteProduct(product, product._id)">
+          <v-icon class="mr-2">delete</v-icon>
+          <a>Verwijderen</a>
+        </v-btn>
       </div>
     </div>
 
@@ -145,5 +155,15 @@ export default {
   margin: 20px 0;
   box-sizing: border-box;
   background: #eee;
+}
+
+.single-product a {
+  text-decoration: none;
+  color: black;
+  font-size: 1em;
+}
+
+.category p{
+  display: inline;
 }
 </style>

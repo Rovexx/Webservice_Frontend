@@ -10,7 +10,7 @@
           <p v-if="product.spoiled == 'true'" class="subheading">Over de datum: Ja</p>
           <p v-else class="subheading">Over de datum: Nee</p>
           <br>
-          <a style="cursor: pointer;" v-on:click="navigate()">Back</a>
+          <a class="back" style="cursor: pointer;" v-on:click="navigate()">Back</a>
         </v-container>
       </v-flex>
     </v-layout>
@@ -35,7 +35,6 @@ export default {
     // get details from product
     const axios = require("axios");
     axios.get("http://server.arvex.nl/api/products/" + this.id).then(response => {
-      //console.log(response.data);
       this.product = response.data;
     });
   },

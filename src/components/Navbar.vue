@@ -2,7 +2,7 @@
     <nav>
         <v-toolbar app dark>
             <v-toolbar-title class="headline">
-                <router-link :to="{ name: 'products' }"><span class="link1">Full stack web</span></router-link>
+                <router-link to='/products' ><span class="link1">Full stack web</span></router-link>
                 <span class="font-weight-light blue--text text--darken-1">APP</span>
             </v-toolbar-title>
             
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    
+
 }
 </script>
 

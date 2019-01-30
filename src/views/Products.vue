@@ -9,15 +9,17 @@
           <p class="title">Merk: </p>           <p class="subheading">{{product.brand}}</p><br>
           <p class="title">Over de datum: </p>  <p v-if="product.spoiled == 'true'">Ja</p>  <p v-else>Nee</p><br>
         </v-container>
-                
+        <!-- Details button -->
         <v-btn class="blue lighten-2">
           <v-icon class="mr-2">details</v-icon>
           <router-link :to="{ name: 'ProductDetails', params: { id: product._id } }"><a class="detailsLink">Details</a></router-link>
         </v-btn>
+        <!-- Edit button -->
         <v-btn class="orange lighten-2" @click="editProduct(product)">
           <v-icon class="mr-2">edit</v-icon>
           <a>Aanpassen</a>
         </v-btn>
+        <!-- Delete button -->
         <v-btn class="red lighten-2" @click="deleteProduct(product, product._id)">
           <v-icon class="mr-2">delete</v-icon>
           <a>Verwijderen</a>
@@ -154,7 +156,8 @@ export default {
   padding: 20px;
   margin: 20px 0;
   box-sizing: border-box;
-  background: #eee;
+  background: rgb(216, 216, 216);
+  border-radius: 5px;
 }
 
 .single-product a {

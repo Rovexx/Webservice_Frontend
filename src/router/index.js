@@ -7,13 +7,15 @@ import AddProduct from '@/views/AddProduct.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes: [{
-      path: '/',
+      path: '/products',
       name: 'Products',
       component: Products
     },
     {
-      path: '/details',
+      path: '/products/:id',
       name: 'ProductDetails',
       component: ProductDetails
     },

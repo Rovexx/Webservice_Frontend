@@ -1,22 +1,5 @@
 <template>
-  <v-container>
-    <div class="container">
-      <v-form if="!submitted" ref="form" v-model="valid" lazy-validation>
-        <v-text-field v-model="namepost" :rules="nameRules" label="Name" required></v-text-field>
-
-        <v-text-field v-model="brandpost" :rules="nameRules" label="Brand" required></v-text-field>
-
-        <v-text-field v-model="spoiledpost" :rules="nameRules" label="Spoiled" required></v-text-field>
-
-        <v-btn :disabled="!valid" color="primary" @click="post">Add</v-btn>
-      </v-form>
-    </div>
-
-    <v-dialog dark color="white" v-model="submitted" max-width="500px">
-      <v-card>
-        <v-card-title>Thank you for posting!</v-card-title>
-      </v-card>
-    </v-dialog>
+  <v-container>    
     <!-- all products in the database -->
     <div id="show-products">
       <h1>Products</h1>
@@ -24,35 +7,23 @@
         <h2>{{product.name}}</h2>
         <h3>{{product.brand}}</h3>
         <h4>{{product.spoiled}}</h4>
-        <!-- Deze moet naar detail pagina linken -->
-        <v-icon class="mr-2" @click="viewItem(product, product._id)">touch_app</v-icon><!-- Deze moet naar detail pagina linken -->
-        <v-icon class="mr-2" @click="editItem(product)">edit</v-icon>
+        <router-link :to="{ name: 'ProductDetails', params: { id: product._id } }">Details</router-link>
+        <v-icon class="mr-2" @click="editProduct(product)">edit</v-icon>
         <v-icon class="mr-2" @click="deleteProduct(product, product._id)">delete</v-icon>
         <br>
         <br>
       </div>
     </div>
-    <!-- Product details -->
-    <v-dialog dark color="white" v-model="view" max-width="500px">
-      <v-card>
-        <v-card-title class="headline black lighten-2" primary-title>{{editedItem.name}}</v-card-title>
 
-        <v-card-text>Informatie over dit product.</v-card-text>
-      </v-card>
-    </v-dialog>
-
+    <!-- Edit item menu -->
     <v-dialog dark color="white" v-model="dialog" max-width="500px">
       <v-card-text>
         <v-container grid-list-md>
           <v-layout wrap>
-            <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.name" label="Product Name"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.brand" label="Product Brand"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.spoiled" label="Product spoiled"></v-text-field>
+            <v-flex>
+              <v-text-field v-model="editedProduct.name" label="Product Name"></v-text-field>
+              <v-text-field v-model="editedProduct.brand" label="Product Brand"></v-text-field>
+              <v-text-field v-model="editedProduct.spoiled" label="Product spoiled"></v-text-field>
             </v-flex>
           </v-layout>
         </v-container>
@@ -60,7 +31,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="white" flat @click="close">Cancel</v-btn>
-        <v-btn color="white" flat @click="save(editedItem, editedItem._id)">Save</v-btn>
+        <v-btn color="white" flat @click="save(editedProduct, editedProduct._id)">Save</v-btn>
       </v-card-actions>
     </v-dialog>
   </v-container>
@@ -84,7 +55,7 @@ export default {
       view: false,
       products: [],
       editedIndex: -1,
-      editedItem: {
+      editedProduct: {
         name: "",
         brand: "",
         spoiled: ""
@@ -123,23 +94,15 @@ export default {
       this.products.splice(this.products.indexOf(products), 1);
     },
 
-    viewItem(products, _id) {
-      const axios = require("axios");
-      axios.get("http://server.arvex.nl/api/products/" + _id);
-      this.editedIndex = this.products.indexOf(products);
-      this.editedItem = Object.assign({}, products);
-      this.view = true;
-      console.log(this.editedItem);
-    },
-    editItem(item) {
+    editProduct(item) {
       this.editedIndex = this.products.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedProduct = Object.assign({}, item);
       this.dialog = true;
     },
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedProduct = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
     },
@@ -147,15 +110,15 @@ export default {
       const axios = require("axios");
 
       axios.put("http://server.arvex.nl/api/products/" + _id, {
-        name: this.editedItem.name,
-        brand: this.editedItem.brand,
-        spoiled: this.editedItem.spoiled
+        name: this.editedProduct.name,
+        brand: this.editedProduct.brand,
+        spoiled: this.editedProduct.spoiled
       });
 
       if (this.editedIndex > -1) {
-        Object.assign(this.products[this.editedIndex], this.editedItem);
+        Object.assign(this.products[this.editedIndex], this.editedProduct);
       } else {
-        this.products.push(this.editedItem);
+        this.products.push(this.editedProduct);
       }
       this.close();
     }
@@ -164,7 +127,7 @@ export default {
   created() {
     const axios = require("axios");
     axios.get("http://server.arvex.nl/api/products").then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       this.products = response.data.items;
     });
   }

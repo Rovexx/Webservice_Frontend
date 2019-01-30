@@ -24,9 +24,9 @@
         <h2>{{product.name}}</h2>
         <h3>{{product.brand}}</h3>
         <h4>{{product.spoiled}}</h4>
-        
-        <v-icon class="mr-2" @click="viewProduct(product, product._id)">touch_app</v-icon><!-- Deze moet naar detail pagina linken -->
-        <v-icon class="mr-2" @click="editProduct(product)">edit</v-icon>
+        <!-- Deze moet naar detail pagina linken -->
+        <v-icon class="mr-2" @click="viewItem(product, product._id)">touch_app</v-icon><!-- Deze moet naar detail pagina linken -->
+        <v-icon class="mr-2" @click="editItem(product)">edit</v-icon>
         <v-icon class="mr-2" @click="deleteProduct(product, product._id)">delete</v-icon>
         <br>
         <br>
@@ -49,10 +49,10 @@
               <v-text-field v-model="editedItem.name" label="Product Name"></v-text-field>
             </v-flex>
             <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.type" label="Product Brand"></v-text-field>
+              <v-text-field v-model="editedItem.brand" label="Product Brand"></v-text-field>
             </v-flex>
             <v-flex xs12 sm6 md4>
-              <v-text-field v-model="editedItem.lane" label="Product spoiled"></v-text-field>
+              <v-text-field v-model="editedItem.spoiled" label="Product spoiled"></v-text-field>
             </v-flex>
           </v-layout>
         </v-container>
@@ -123,7 +123,7 @@ export default {
       this.products.splice(this.products.indexOf(products), 1);
     },
 
-    viewProduct(products, _id) {
+    viewItem(products, _id) {
       const axios = require("axios");
       axios.get("http://server.arvex.nl/api/products/" + _id);
       this.editedIndex = this.products.indexOf(products);
@@ -131,9 +131,9 @@ export default {
       this.view = true;
       console.log(this.editedItem);
     },
-    editProduct(product) {
-      this.editedIndex = this.products.indexOf(product);
-      this.editedProduct = Object.assign({}, product);
+    editItem(item) {
+      this.editedIndex = this.products.indexOf(item);
+      this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
     close() {

@@ -45,14 +45,14 @@ export default {
     post: function() {
       const axios = require("axios");
       axios
-        .post("http://server.arvex.nl/api/products", {
+        .post("http://server.arvex.nl/api/products/", {
           name: this.namepost,
           brand: this.brandpost,
           spoiled: this.spoiledpost
         })
-        // .then(function(response) {
-        //   console.log(response);
-        // })
+        .then(function(response) {
+          console.log(response);
+        })
         .catch(function(error) {
           console.log(error);
         });

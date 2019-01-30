@@ -17,27 +17,27 @@
         <v-card-title>Thank you for posting!</v-card-title>
       </v-card>
     </v-dialog>
-
+    <!-- all products in the database -->
     <div id="show-products">
       <h1>Products</h1>
       <div v-for="product in products" v-bind:key="product._id" class="single-product">
         <h2>{{product.name}}</h2>
         <h3>{{product.brand}}</h3>
         <h4>{{product.spoiled}}</h4>
-
-        <v-icon class="mr-2" @click="viewItem(product, product._id)">touch_app</v-icon>
-        <v-icon class="mr-2" @click="editItem(product)">edit</v-icon>
+        
+        <v-icon class="mr-2" @click="viewProduct(product, product._id)">touch_app</v-icon><!-- Deze moet naar detail pagina linken -->
+        <v-icon class="mr-2" @click="editProduct(product)">edit</v-icon>
         <v-icon class="mr-2" @click="deleteProduct(product, product._id)">delete</v-icon>
         <br>
         <br>
       </div>
     </div>
-
+    <!-- Product details -->
     <v-dialog dark color="white" v-model="view" max-width="500px">
       <v-card>
         <v-card-title class="headline black lighten-2" primary-title>{{editedItem.name}}</v-card-title>
 
-        <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</v-card-text>
+        <v-card-text>Informatie over dit product.</v-card-text>
       </v-card>
     </v-dialog>
 
@@ -97,13 +97,13 @@ export default {
       var self = this;
       const axios = require("axios");
       axios
-        .post("http://server.arvex.nl/api/products", {
+        .post("http://server.arvex.nl/api/products/", {
           name: this.namepost,
           brand: this.brandpost,
           spoiled: this.spoiledpost
         })
         .then(function(response) {
-          //console.log(response);
+          console.log(response);
           self.products.push(response.data);
           self.submitted = true;
 
@@ -123,17 +123,17 @@ export default {
       this.products.splice(this.products.indexOf(products), 1);
     },
 
-    viewItem(products, _id) {
+    viewProduct(products, _id) {
       const axios = require("axios");
       axios.get("http://server.arvex.nl/api/products/" + _id);
       this.editedIndex = this.products.indexOf(products);
       this.editedItem = Object.assign({}, products);
       this.view = true;
-      //console.log(this.editedItem);
+      console.log(this.editedItem);
     },
-    editItem(item) {
-      this.editedIndex = this.products.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+    editProduct(product) {
+      this.editedIndex = this.products.indexOf(product);
+      this.editedProduct = Object.assign({}, product);
       this.dialog = true;
     },
     close() {
@@ -164,7 +164,7 @@ export default {
   created() {
     const axios = require("axios");
     axios.get("http://server.arvex.nl/api/products").then(response => {
-      //console.log(response.data);
+      console.log(response.data);
       this.products = response.data.items;
     });
   }

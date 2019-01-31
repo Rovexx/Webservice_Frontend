@@ -6,8 +6,6 @@
       <div v-for="product in products" v-bind:key="product._id" class="single-product">
         <v-container class="category">
           <p class="title">Product naam: </p>   <p class="subheading">{{product.name}}</p><br>
-          <p class="title">Merk: </p>           <p class="subheading">{{product.brand}}</p><br>
-          <p class="title">Over de datum: </p>  <p v-if="product.spoiled == 'true'">Ja</p>  <p v-else>Nee</p><br>
         </v-container>
         <!-- Details button -->
         <v-btn class="blue">
@@ -110,7 +108,6 @@ export default {
   created() {
     const axios = require("axios");
     axios.get("http://server.arvex.nl/api/products").then(response => {
-      console.log(response.data);
       this.products = response.data.items;
     });
   }

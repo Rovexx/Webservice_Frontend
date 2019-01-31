@@ -62,10 +62,6 @@ export default {
           spoiled: this.spoiledpost
         })
         .then(function(response) {
-          //console.log(response);
-          self.namepost = "";
-          self.brandpost = "";
-          self.spoiledpost = "";
           self.submitted = true;          
         })
         .catch(function(error) {

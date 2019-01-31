@@ -10,17 +10,17 @@
           <p class="title">Over de datum: </p>  <p v-if="product.spoiled == 'true'">Ja</p>  <p v-else>Nee</p><br>
         </v-container>
         <!-- Details button -->
-        <v-btn class="blue lighten-2">
+        <v-btn class="blue">
           <v-icon class="mr-2">details</v-icon>
           <router-link :to="{ name: 'ProductDetails', params: { id: product._id } }"><a class="detailsLink">Details</a></router-link>
         </v-btn>
         <!-- Edit button -->
-        <v-btn class="orange lighten-2" @click="editProduct(product)">
+        <v-btn class="orange lighten-1" @click="editProduct(product)">
           <v-icon class="mr-2">edit</v-icon>
           <a>Aanpassen</a>
         </v-btn>
         <!-- Delete button -->
-        <v-btn class="red lighten-2" @click="deleteProduct(product, product._id)">
+        <v-btn class="red lighten-1" @click="deleteProduct(product, product._id)">
           <v-icon class="mr-2">delete</v-icon>
           <a>Verwijderen</a>
         </v-btn>
@@ -28,22 +28,22 @@
     </div>
 
     <!-- Edit item menu -->
-    <v-dialog dark color="white" v-model="dialog" max-width="500px">
+    <v-dialog class="dialogBox" v-model="dialog" max-width="500px">
       <v-card-text>
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex>
-              <v-text-field v-model="editedProduct.name" label="Product Name"></v-text-field>
-              <v-text-field v-model="editedProduct.brand" label="Product Brand"></v-text-field>
-              <v-text-field v-model="editedProduct.spoiled" label="Product spoiled"></v-text-field>
+              <v-text-field v-model="editedProduct.name" label="Product naam"></v-text-field>
+              <v-text-field v-model="editedProduct.brand" label="Product merk"></v-text-field>
+              <v-text-field v-model="editedProduct.spoiled" label="Product over de datum (true | false)"></v-text-field>
             </v-flex>
           </v-layout>
         </v-container>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="white" flat @click="close">Cancel</v-btn>
-        <v-btn color="white" flat @click="save(editedProduct, editedProduct._id)">Save</v-btn>
+        <v-btn class="blue" flat @click="close">Cancel</v-btn>
+        <v-btn class="green lighten-1" flat @click="save(editedProduct, editedProduct._id)">opslaan</v-btn>
       </v-card-actions>
     </v-dialog>
   </v-container>
@@ -86,7 +86,7 @@ export default {
           spoiled: this.spoiledpost
         })
         .then(function(response) {
-          console.log(response);
+          //console.log(response);
           self.products.push(response.data);
           self.submitted = true;
 
@@ -168,5 +168,9 @@ export default {
 
 .category p{
   display: inline;
+}
+
+.v-dialog {
+  background-color: rgba(255, 255, 255, 0.89);
 }
 </style>

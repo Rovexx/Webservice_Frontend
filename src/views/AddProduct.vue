@@ -9,16 +9,17 @@
         <!-- form -->
         <v-container class="grey lighten-4 category">
           <v-form if="!submitted" ref="form" v-model="valid" lazy-validation>
-            <v-text-field v-model="name" :rules="nameRules" label="Naam" required></v-text-field>
-            <v-text-field v-model="brand" :rules="nameRules" label="Merk" required></v-text-field>
-            <v-text-field v-model="spoiled" :rules="nameRules" label="Over de datum (true | false)" required></v-text-field>
+            <v-text-field v-model="namepost" :rules="nameRules" label="Naam" required></v-text-field>
+            <v-text-field v-model="brandpost" :rules="nameRules" label="Merk" required></v-text-field>
+            <v-text-field v-model="spoiledpost" :rules="nameRules" label="Over de datum (true | false)" required></v-text-field>
 
             <v-btn :disabled="!valid" color="primary" v-on:click.prevent="post">Add</v-btn>
 
             <v-btn color="error" @click="reset">Reset Form</v-btn>
           </v-form>
-          <div v-if="submitted">Product toegevoegd!</div>
-
+          <div v-if="submitted">
+            <h1>Product toegevoegd!</h1>
+          </div>
           <!-- Back button -->
           <v-btn class="grey darken-4" style="cursor: pointer;" v-on:click="navigate()">
             <a class="back">Terug</a>
@@ -38,13 +39,13 @@ export default {
   data(){
     return{
       valid: true,
-      name: "",
-      brand: "",
-      spoiled: "",
+      submitted: false,
+      namepost: "",
+      brandpost: "",
+      spoiledpost: "",
       nameRules: [
         v => !!v || "required!"
-      ],
-      submitted: false
+      ]
     }
   },
   created(){
@@ -52,9 +53,7 @@ export default {
   methods:{
     post: function() {
       const axios = require("axios");
-      var headers = {
-        'content-type': 'application/JSON'
-      }
+      var self = this;
       axios
         .post("http://server.arvex.nl/api/products/", {
 
@@ -63,17 +62,18 @@ export default {
           spoiled: this.spoiledpost
         })
         .then(function(response) {
-          console.log(response);
-          // empty form
+          //console.log(response);
           self.namepost = "";
           self.brandpost = "";
           self.spoiledpost = "";
+          self.submitted = true;          
         })
         .catch(function(error) {
           console.log(error);
         });
     },
     reset() {
+      this.submitted = false;
       this.$refs.form.reset();
     },
     navigate(){

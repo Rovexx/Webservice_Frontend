@@ -27,7 +27,7 @@ import router from '../router'
 import axios from "axios";
 
 export default {
-  name: 'Details',
+  name: 'ProductDetails',
   data(){
     return{
       id: 0,

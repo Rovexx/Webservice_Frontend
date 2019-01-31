@@ -26,16 +26,16 @@
         </v-btn>
       </div>
     </div>
-
+  
     <!-- Edit item menu -->
     <v-dialog class="dialogBox" v-model="dialog" max-width="500px">
       <v-card-text>
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex>
-              <v-text-field v-model="editedProduct.name" label="Product naam"></v-text-field>
-              <v-text-field v-model="editedProduct.brand" label="Product merk"></v-text-field>
-              <v-text-field v-model="editedProduct.spoiled" label="Product over de datum (true | false)"></v-text-field>
+              <v-text-field v-model="editedProduct.name" :rules="nameRules" label="Product naam"></v-text-field>
+              <v-text-field v-model="editedProduct.brand" :rules="nameRules" label="Product merk"></v-text-field>
+              <v-text-field v-model="editedProduct.spoiled" :rules="nameRules" label="Product over de datum (true | false)"></v-text-field>
             </v-flex>
           </v-layout>
         </v-container>
@@ -55,10 +55,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      valid: true,
-      namepost: "",
-      brandpost: "",
-      spoiledpost: "",
       nameRules: [
         v => !!v || "required!"
       ],
@@ -74,32 +70,7 @@ export default {
       }
     };
   },
-  components: {},
   methods: {
-    post: function() {
-      var self = this;
-      const axios = require("axios");
-      axios
-        .post("http://server.arvex.nl/api/products/", {
-          name: this.namepost,
-          brand: this.brandpost,
-          spoiled: this.spoiledpost
-        })
-        .then(function(response) {
-          //console.log(response);
-          self.products.push(response.data);
-          self.submitted = true;
-
-          self.namepost = "";
-          self.brandpost = "";
-          self.spoiledpost = "";
-        })
-
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-
     deleteProduct(products, _id) {
       const axios = require("axios");
       axios.delete("http://server.arvex.nl/api/products/" + _id);
@@ -133,13 +104,13 @@ export default {
         this.products.push(this.editedProduct);
       }
       this.close();
-    }
+    },
   },
 
   created() {
     const axios = require("axios");
     axios.get("http://server.arvex.nl/api/products").then(response => {
-      //console.log(response.data);
+      console.log(response.data);
       this.products = response.data.items;
     });
   }
